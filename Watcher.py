@@ -4,17 +4,21 @@ from watchdog.events import FileSystemEventHandler
 import os
 from MoveFiles import FileMover
 
+class Object:
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
+
 user = os.getenv('USER')
 
 class Watcher:
     DIRECTORY_TO_WATCH = '/Users/%s/Downloads' %user
-    ADD_DIR_RANGE = []
+    ADD_DIR_RANGE = Object(name = 'Isos', extentions = ('.iso', '.isos'))
     def __init__(self):
         self.observer = Observer()
-        self.file_mover = FileMover(self.DIRECTORY_TO_WATCH, self.ADD_DIR_RANGE)
+        self.fileMover = FileMover(self.DIRECTORY_TO_WATCH, self.ADD_DIR_RANGE)
     
     def run(self):
-        event_handler = Handler()
+        event_handler = Handler(self.fileMover)
         self.observer.schedule(event_handler, self.DIRECTORY_TO_WATCH, recursive=True)
         self.observer.start()
         try:
@@ -29,12 +33,14 @@ class Watcher:
 
 class Handler(FileSystemEventHandler):
 
-    @staticmethod
-    def on_any_event(event):
+    def __init__(self, fileMover):
+        self.fileMover = fileMover
+    def on_any_event(self, event):
         if event.is_directory:
             return None
         elif event.event_type == 'created':
             print "Received created event - %s." %event.src_path
+            self.fileMover.move_files(event.src_path, os.path.basename(event.src_path))
 
         elif event.event_type == 'modified':
             print "Received modified event - %s." %event.src_path
