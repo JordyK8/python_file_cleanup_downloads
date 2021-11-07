@@ -1,0 +1,22 @@
+{
+  "name": "python_file_cleanup_downloads",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordyK8/python_file_cleanup_downloads.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JordyK8/python_file_cleanup_downloads/issues"
+  },
+  "homepage": "https://github.com/JordyK8/python_file_cleanup_downloads#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
