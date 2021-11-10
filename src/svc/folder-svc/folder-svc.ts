@@ -34,7 +34,7 @@ class FolderSvc {
 
     })
   }
-  public makeATree(paths: any): FSPart[] {
+  public makeATree(paths: string[][]): FSPart[] {
     const tree: FSPart[] = [];
     for (let i = 0; i < paths.length; i++) {
       const path = paths[i];
@@ -60,8 +60,9 @@ class FolderSvc {
     }
     return tree;
   }
-    static findWhere(array: any, key: string, value: string) {        
-        let t = 0;
+    static findWhere(array: FSPart[], key: string, value: string) {        
+      let t = 0;
+      //@ts-ignore
         while (t < array.length && array[t][key] !== value) { t++; }
     
         if (t < array.length) {

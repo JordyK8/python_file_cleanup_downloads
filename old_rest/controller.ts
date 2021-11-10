@@ -1,4 +1,4 @@
-import FolderSvc from './svc/folder-svc/folder-svc'
+import FolderSvc from '../src/svc/folder-svc/folder-svc'
 import { Request, Response, NextFunction } from 'express';
 
 export const getFolders = async (req: Request, res: Response, next: NextFunction) => {

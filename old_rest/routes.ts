@@ -1,5 +1,5 @@
 import express from 'express'
-import { getFolders } from '../src/controller'
+import { getFolders } from './controller'
 
 const router = express.Router()
 
