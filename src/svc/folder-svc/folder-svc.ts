@@ -11,7 +11,6 @@ class FolderSvc {
     return new Promise((resolve, reject) => {
       const python = spawn('python3', ['SendInfo.py'], {cwd: './src/lib/pythonScripts'});
       python.stdout.on('data', (data) => {
-        console.log('data');
         
         const dataArr: string[] = data.toString().split('\n')
         if(dataArr[0] === '') dataArr.shift()

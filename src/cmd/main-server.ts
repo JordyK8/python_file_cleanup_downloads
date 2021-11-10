@@ -1,12 +1,20 @@
-import { default as app } from "../lib/server";
 import { default as api } from '../api/graphql-main/main'
-import { graphqlHTTP } from 'express-graphql'
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import express from 'express';
+import http from 'http';
 
-app.use('/graphql', graphqlHTTP({
-  schema: api.mainGraphSchemas,
-  rootValue: api.mainGraphResolvers,
-  graphiql: true,
-}));
-
-app.listen(process.env.MAIN_PORT || 3000);
-console.log(`Running a GraphQL API server at ${process.env.MAIN_HOST || 'http://localhost'}:${process.env.MAIN_PORT || 3000}/graphql`);
+async function startApolloServer(typeDefs:any, resolvers: any) {
+  const app = express();
+  const httpServer = http.createServer(app);
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
+  await server.start();
+  server.applyMiddleware({ app });
+  await new Promise<void>(resolve => httpServer.listen({ port: 3000 }, resolve));
+  console.log(`🚀 Server ready at http://localhost:3000${server.graphqlPath}`);
+}
+startApolloServer(api.mainGraphSchemas, api.mainGraphResolvers)

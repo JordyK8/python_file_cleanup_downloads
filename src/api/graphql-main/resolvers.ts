@@ -1,14 +1,19 @@
 import FolderSvc from '../../svc/folder-svc/folder-svc'
-export default {
-  Hello: () => {
+
+  const Hello = (_: any, args: any) => {
     console.log('working');
     return 'it works'
-  },
+  };
 
-  GetFolders: () => { 
+  const GetFolders = (_: any, args: any) => { 
     const folderSvc = new FolderSvc();
     return folderSvc.getFolders()
-  },
+  };
 
-  
+
+export default {
+  Query: {
+    Hello,
+    GetFolders,
+  },
 }
