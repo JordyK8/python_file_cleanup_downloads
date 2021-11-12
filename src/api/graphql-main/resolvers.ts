@@ -19,6 +19,8 @@ export default {
     GetFolders,
   },
   Subscription: {
-    Test: () => pubsub.asyncIterator(['TEST'])
+    Test: {
+      subscribe: () => pubsub.asyncIterator(['TEST'])
+  }
   }
 }
