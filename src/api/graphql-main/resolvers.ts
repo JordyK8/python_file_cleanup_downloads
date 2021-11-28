@@ -1,14 +1,26 @@
 import FolderSvc from '../../svc/folder-svc/folder-svc'
-export default {
-  Hello: () => {
+import { PubSub, withFilter } from 'apollo-server-express';
+const pubsub = new PubSub();
+  const Hello = (_: any, args: any) => {
     console.log('working');
+    pubsub.publish('TEST', { test: 'hoi' })
     return 'it works'
-  },
+  };
 
-  GetFolders: () => { 
+  const GetFolders = (_: any, args: any) => { 
     const folderSvc = new FolderSvc();
     return folderSvc.getFolders()
-  },
+  };
 
-  
+
+export default {
+  Query: {
+    Hello,
+    GetFolders,
+  },
+  Subscription: {
+    Test: {
+      subscribe: () => pubsub.asyncIterator(['TEST'])
+  }
+  }
 }

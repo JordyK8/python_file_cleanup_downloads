@@ -1,8 +1,11 @@
-import { buildSchema } from 'graphql'
-const typeDefs = buildSchema(`
+const { gql } = require('apollo-server-express')
+const typeDefs = gql`
   type Query {
     Hello: String
     GetFolders: [FSPart]
+  }
+  type Subscription {
+    Test: String
   }
  
 
@@ -11,5 +14,5 @@ const typeDefs = buildSchema(`
     label: String
     children: [FSPart]
   }
-`)
+`
 export default typeDefs 
