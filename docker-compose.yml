@@ -1,0 +1,42 @@
+version: '3.2'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: Tester123!
+    volumes:
+      - 'rabbitmq:/var/lib/rabbitmq'
+    ports: 
+      - '5672:5672'
+      - '15672:15672'
+  minio:
+    container_name: minio
+    image: minio/minio:latest
+    restart: 'no'
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    ports:
+      - '9000:9000'
+    volumes:
+      - 'minio-data:/data'
+    command: server /data
+  minio-mc:
+    image: minio/mc:latest
+    container_name: minio-mc
+    depends_on:
+      - minio
+    volumes:
+      - './docker-scripts/minio/policies:/policies'
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host rm local;
+      /usr/bin/mc config host add --quiet --api s3v4 local http://minio:9000 admin wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;
+      /usr/bin/mc mb --quiet local/storage/;
+      exit 0
+      "
+volumes:
+  rabbitmq:
+  minio-data:

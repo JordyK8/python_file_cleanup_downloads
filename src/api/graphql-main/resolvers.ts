@@ -3,7 +3,7 @@ import { PubSub, withFilter } from 'apollo-server-express';
 const pubsub = new PubSub();
   const Hello = (_: any, args: any) => {
     console.log('working');
-    pubsub.publish('TEST', "joewhoew")
+    pubsub.publish('TEST', { test: 'hoi' })
     return 'it works'
   };
 
